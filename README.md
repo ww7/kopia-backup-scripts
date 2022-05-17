@@ -15,8 +15,8 @@ Installation
 Dependecies: `git`
 
 1. Open Terminal locally or connect to remote Linux server (Ubuntu/Debian) via SSH
-2. Run `git clone --depth=1 <repo_url>` to fetch this repo
-3. Run `bash ./<repo_name>/kopia-prepare.sh` to install Kopia and dependencies
+2. Run `git clone --depth=1 https://github.com/ww7/kopia-scripts.git` to fetch this repo
+3. Run `bash ./kopia-scripts/kopia-prepare.sh` to install Kopia and dependencies
 4. Open new local Terminal or reconnect to remote SSH (for environment reload)
 
 Scripts 
