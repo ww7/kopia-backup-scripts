@@ -1,0 +1,28 @@
+# Hetzner StorageBox'es (one or space separated list), syntax: hostname
+export boxes="u281891.your-storagebox.de u281892.your-storagebox.de"
+
+# Folder path where repository stored on remote storage
+export repository_remote_folder="/home/kopia/json"
+
+# Default password what mandatory for repositories encruption
+export KOPIA_PASSWORD="1"
+
+# Other Kopia settings
+export KOPIA_CHECK_FOR_UPDATES=false
+
+# KOPIA_PERSIST_CREDENTIALS_ON_CONNECT=false
+# KOPIA_CHECK_FOR_UPDATES=false
+
+# KOPIA_CACHE_DIRECTORY
+# KOPIA_LOG_DIR
+# KOPIA_LOG_DIR_MAX_FILES
+# KOPIA_KEEP_LOGS
+
+# KOPIA_SERVER_USERNAME
+# KOPIA_SERVER_PASSWORD
+# KOPIA_SERVER_CONTROL_USER
+# KOPIA_SERVER_CONTROL_PASSWORD
+
+# B2_KEY_ID
+# B2_KEY
+
