@@ -28,15 +28,11 @@ Scripts
 - import SSH key to Hetzner StorageBox, add hosts to known_hosts
 - add scripts path to env
 
-> Require: running from "root" or "sudo".
-
-> Note: operation will be skipped if already done before.
+> Require: running from "root" or "sudo". Note: operation will be skipped if already done before.
 
 `k-repo-create-sftp.sh` script to create repositaries
-> Require: will promt to set mandatory password for repository encryption 
 
 `k-repo-create-sftp.sh` script to connect existing repositaries
-> Require: will promt the password for repository dencryption
 
 Essential CLI commands
 ---
