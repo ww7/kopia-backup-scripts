@@ -41,7 +41,7 @@ Scripts
 
 `k-repo-sync-add-sftp.sh` – add SFTP for data replication (synchronization) from main repository and save separate config files for futher connections.
 
-`k-repo-sync.sh` – sync repositories data, from _box_main_ to _boxes_to_sync_.
+`k-repo-sync.sh` – sync repositories data, from _repo_main_ to _repo_sync_.
 
 `k-server-start.sh` – draft version for run Kopia web dashboard UI 
 
@@ -49,9 +49,14 @@ Quick start
 ---
 
 ### Steps for first run:
-1. rub `k-prepare.sh` for instalation and initialization (it needs to run again if new remote storage's added) 
-2. create repository (main, master) with `k-repo-create-sftp.sh`
-3. add folders or files with `kopia snapshot create [source]`
+1. Edit `config` file (or use provided example):
+- `repo_main` (required), – main SFTP repository storage (syntax: user@host)
+- `repo_sync` (optional) – additional storages for main repository replication/sync (one or space separated list) 
+- `repository_folder` (reqired) – path where repository folder placed on storage
+- `KOPIA_PASSWORD` (reqired) – password for repositories encryption
+2. Run `k-prepare.sh` for instalation and initialization (it needs to run again if new remote storage's added). First time password for remote user@storage_host can be asked
+3. Create repository (main, master) with `k-repo-create-sftp.sh`
+4. Add folders or files with `kopia snapshot create [source (path to file or folder)]`
 
 ### Next:
 - add new SFTP storage's for main repository replication (sync) with `k-repo-sync-add-sftp.sh`

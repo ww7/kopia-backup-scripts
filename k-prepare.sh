@@ -9,18 +9,16 @@
 # Require: running from "root" or "sudo"
 # Note: operation will be skipped if already done before
 
-script_dir="$( cd "$( dirname "$0" )" && pwd )"
-source $script_dir/config
-
 set -e
 set -uo pipefail
 # set -x
 
-source config
+script_dir="$( cd "$( dirname "$0" )" && pwd )"
+source $script_dir/config
 # `config` overwrites: 
-# Hetzner StorageBox'es (one or space separated list), syntax: user@hostname
+# Hetzner StorageBox'es (one or space separated list), syntax: user@host
 # Uncomment to overwrite StorageBox'es list from 'config' file
-# boxes="u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de"
+# repositories="u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de"
 
 # initialization
 cd $script_dir || { echo "Error: keys directory inaccessible" && exit 1; }
@@ -34,25 +32,29 @@ knownhosts="$script_dir/keys/known_hosts"
 if [[ ! -f $(which kopia) ]]; then
   curl -s https://kopia.io/signing-key | sudo gpg --dearmor -o /usr/share/keyrings/kopia-keyring.gpg
   echo "deb [signed-by=/usr/share/keyrings/kopia-keyring.gpg] http://packages.kopia.io/apt/ stable main" | sudo tee /etc/apt/sources.list.d/kopia.list
-  apt update && apt install kopia #kopia-ui
+  apt update && apt install kopia lftp -y #kopia-ui
   { [[ -f $(which kopia) ]] && echo "Kopia installed to $(which kopia)"; } || { echo "Error: Kopia no installed, check errors" && exit 1; }
 fi
 
 # generate SFTP (SSH) key for access to StorageBox'es
 [[ -f "$script_dir"/keys/id_kopia ]] || \
-ssh-keygen -o -a 100 -t ed25519 -f keys/id_kopia -C "demo key (password-less) for access to Hetzner StorageBox for Kopia" -q -N ""
+ssh-keygen -o -a 100 -t ed25519 -f keys/id_kopia -C "demo key (password-less) for access to SFTP storage for Kopia" -q -N ""
 key=$(cat keys/id_kopia.pub)
 
 # import newly created SSH key to StorageBox'es, add hosts to known_hosts
-for box in $boxes; do 
-  authorized_keys="$script_dir"/keys/"$box"_authorized_keys
-  box_hostname=$(echo $box | sed 's/.*@//')
-  [[ -n $(grep "$box" "$script_dir/keys/known_hosts") ]] || ssh-keyscan -p 23 $box_hostname >> "$knownhosts" 2> /dev/null
-  scp -q -P 23 "$box":/home/.ssh/authorized_keys "$authorized_keys"
-  [[ -n $(grep "$key" keys/"$box"_authorized_keys) ]] && { echo "$box : key already imported" && continue; }
+repositories="${repo_main} ${repo_sync}"
+
+for repo in $repositories; do 
+  username=${repo%%@*} 
+  host=$(echo $repo | sed 's/.*@//' | sed 's/:/\t/g' | awk '{print $1}')
+  port=$(echo $repo | sed 's/.*://')
+  authorized_keys="$script_dir"/keys/"$username@$host"_authorized_keys
+  [[ -n $(grep "$host" "$script_dir/keys/known_hosts") ]] || ssh-keyscan -p $port $host >> "$knownhosts" 2> /dev/null
+  scp -q -P $port "$username@$host":/home/.ssh/authorized_keys "$authorized_keys"
+  [[ -n $(grep "$key" keys/"$username@$host"_authorized_keys) ]] && { echo "$repo : key already imported" && continue; }
   echo $(cat keys/id_kopia.pub) | tee -a "$authorized_keys"
-  echo -e "echo mkdir .ssh \n chmod 700 .ssh \n put "$authorized_keys" .ssh/authorized_keys \n chmod 600 .ssh/authorized_keys" | sftp -q -P 23 "$box" > /dev/null 2>&1
-  echo "$box : new key imported" 
+  echo -e "echo mkdir .ssh \n chmod 700 .ssh \n put "$authorized_keys" .ssh/authorized_keys \n chmod 600 .ssh/authorized_keys" | sftp -q -P $port "$username@$host" > /dev/null 2>&1
+  echo "$repo : key imported" 
 done
 
 # add scripts path to evironment 

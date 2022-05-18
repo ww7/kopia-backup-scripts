@@ -2,22 +2,27 @@
 
 set -e
 set -uo pipefail
-set -x
+# set -x
 
 script_dir="$( cd "$( dirname "$0" )" && pwd )"
 source $script_dir/config
 # `config` overwrites: 
-# boxes_to_sync="u281891@u281891.your-storagebox.de u281891@u281892.your-storagebox.de"
-# box_main="u281892@u281892.your-storagebox.de"
+# repo_sync="u281891@u281891.your-storagebox.de:23 u281891@u281892.your-storagebox.de:23"
+# repo_main="u281892@u281892.your-storagebox.de:23"
 
 keyfile="$script_dir/keys/id_kopia"
 knownhosts="$script_dir/keys/known_hosts"
 
-kopia repository connect from-config --file "$script_dir/repositories/repo-$box_main.config"
+kopia repository connect from-config --file "$script_dir/repositories/repo-$repo_main.config"
 
-for box in $boxes_to_sync; do 
-  [[ -n $(grep "$box" "$script_dir/keys/known_hosts") ]] || ssh-keyscan -p 23 $(echo $box | sed 's/.*@//') >> "$knownhosts" > /dev/null
+for repo in $repo_sync; do 
+  
+  host=$(echo $repo | sed 's/.*@//' | sed 's/:/\t/g' | awk '{print $1}')
+  port=$(echo $repo | sed 's/.*://')
 
-  kopia repository sync-to from-config --delete --file "$script_dir/repositories/repo-$box.config"
+  [[ -n $(grep "$host" "$script_dir/keys/known_hosts") ]] || ssh-keyscan -p $port $host >> "$knownhosts"  2> /dev/null
+ 
+  kopia repository sync-to from-config --delete --file "$script_dir/repositories/repo-$username@$host.config"
+
 done
 

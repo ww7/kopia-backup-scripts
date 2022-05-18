@@ -10,4 +10,4 @@ source $script_dir/config
 
 ip=$(curl -s -4 ifconfig.co)
 
-kopia server start --insecure --server-password $ui-password --server-username	$ui-username --ui --address http://$ip:1515
+kopia server start --insecure --server-password $ui_password --server-username	$ui_username --ui --address http://$ip:1515
