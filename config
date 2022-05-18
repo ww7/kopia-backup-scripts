@@ -1,5 +1,7 @@
-# Hetzner StorageBox'es (one or space separated list), syntax: hostname
-export boxes="u281891.your-storagebox.de u281892.your-storagebox.de"
+# Hetzner StorageBox'es (one or space separated list), syntax: user@hostname
+export boxes="u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de"
+export box_main="u281891@u281891.your-storagebox.de"
+export boxes_to_sync="u281892@u281892.your-storagebox.de"
 
 # Folder path where repository stored on remote storage
 export repository_remote_folder="/home/kopia/json"

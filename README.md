@@ -7,7 +7,7 @@ This repository contains Bash scripts toolset for [Kopia](https://kopia.io/docs/
 
 _**Current version adopted for storing backup repositories on Hetzner StorageBox (over SFTP)**_
 
-_Demo Hetzner StorageBox'es: "u281891.your-storagebox.de u281892.your-storagebox.de"_
+_Demo Hetzner StorageBox'es: "u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de"_
 
 Installation
 ---
@@ -19,20 +19,31 @@ Dependecies: `git`
 3. Run `bash ./kopia-scripts/kopia-prepare.sh` to install Kopia and dependencies
 4. Open new local Terminal or reconnect to remote SSH (for environment reload)
 
+Configuration
+---
+
+Parameters and environment variables for scripts stored in `config` file.
+All paramenetrs can be overwritten inside every script (place after `source config`).
+
 Scripts 
 ---
 
-`kopia-prepare.sh` script performs:
-- installation of software dependencies and Kopia (for Linux Ubuntu/Debian)
+`kopia-prepare.sh` performs:
+> Require: running from "root" or "sudo". Note: operation will be skipped if already done before.
+- install of software dependencies and Kopia (for Linux Ubuntu/Debian)
 - generate SSH key for Kopia autorization to remote repositories based on SFTP/SSH
-- import SSH key to Hetzner StorageBox, add hosts to known_hosts
+- import SSH key to Hetzner StorageBox'es (listed in `box` variable), add hosts to known_hosts
 - add scripts path to env
 
-> Require: running from "root" or "sudo". Note: operation will be skipped if already done before.
+`k-repo-create-sftp.sh` – create repositary and save separate config file for futher connections.
 
-`k-repo-create-sftp.sh` script to create repositaries
+`k-repo-connect-sftp.sh` – connect to existing repositary, making it as active (main).
 
-`k-repo-create-sftp.sh` script to connect existing repositaries
+`k-repo-sync-add-sftp.sh` – add SFTP for data replication (synchronization) from main repository and save separate config files for futher connections.
+
+`k-repo-sync.sh` – sync repositories data, from _box_main_ to _boxes_to_sync_.
+
+
 
 Essential CLI commands
 ---
