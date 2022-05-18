@@ -4,7 +4,7 @@
 
 # set -e
 set -uo pipefail
-set -x
+# set -x
 
 source config
 # `config` overwrites: 

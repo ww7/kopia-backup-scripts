@@ -11,7 +11,7 @@
 
 source config
 
-# set -e
+set -e
 set -uo pipefail
 # set -x
 

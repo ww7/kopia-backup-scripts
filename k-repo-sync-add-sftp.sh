@@ -2,9 +2,9 @@
 
 # Can promt to set mandatory password for repository encryption 
 
-# set -e
+set -e
 set -uo pipefail
-set -x
+# set -x
 
 source config
 # `config` overwrites: 
