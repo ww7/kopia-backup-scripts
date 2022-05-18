@@ -86,6 +86,7 @@ Essential CLI commands
 - [`snapshot restore`](https://kopia.io/docs/reference/command-line/common/snapshot-restore/) - Restore a directory or a file
 - [`snapshot verify`](https://kopia.io/docs/reference/command-line/common/snapshot-verify/) - Verify the contents of stored snapshot
 
+More: [Kopia CLI reference](https://kopia.io/docs/reference/command-line/)
 
 Links
 ---
@@ -95,4 +96,4 @@ Links
 * Have a look at the [repositories](https://kopia.io/docs/Repositories/) page to repositories usage examples
 * Check out some of Kopia's unique [Features](https://kopia.io/docs/features/) including deduplication and encryption
 * Learn about the [Architecture](https://kopia.io/docs/advanced/architecture/) of Kopia
-* Find more details about command line [Reference](https://kopia.io/docs/reference/command-line/) section.
+* Find more details about command line [CLI reference](https://kopia.io/docs/reference/command-line/).
