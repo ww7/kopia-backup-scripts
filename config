@@ -9,6 +9,9 @@ export repository_remote_folder="/home/kopia/json"
 # Default password what mandatory for repositories encruption
 export KOPIA_PASSWORD="1"
 
+export ui-username="k"
+export ui-password="k"
+
 # Other Kopia settings
 export KOPIA_CHECK_FOR_UPDATES=false
 

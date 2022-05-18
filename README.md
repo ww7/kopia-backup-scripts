@@ -17,7 +17,7 @@ Dependecies: `git`
 1. Open Terminal locally or connect to remote Linux server (Ubuntu/Debian) via SSH
 2. Run `git clone --depth=1 https://github.com/ww7/kopia-scripts.git` to fetch this repo
 3. Run `bash ./kopia-scripts/kopia-prepare.sh` to install Kopia and dependencies
-4. Open new local Terminal or reconnect to remote SSH (for environment reload)
+4. (optional) Open new local Terminal or reconnect to remote SSH (for environment reload)
 
 Configuration
 ---
@@ -28,7 +28,7 @@ All paramenetrs can be overwritten inside every script (place after `source conf
 Scripts 
 ---
 
-`kopia-prepare.sh` performs:
+`k-prepare.sh` performs:
 > Require: running from "root" or "sudo". Note: operation will be skipped if already done before.
 - install of software dependencies and Kopia (for Linux Ubuntu/Debian)
 - generate SSH key for Kopia autorization to remote repositories based on SFTP/SSH
@@ -43,7 +43,25 @@ Scripts
 
 `k-repo-sync.sh` – sync repositories data, from _box_main_ to _boxes_to_sync_.
 
+`k-server-start.sh` – draft version for run Kopia web dashboard UI 
 
+Quick start
+---
+
+### Steps for first run:
+1. rub `k-prepare.sh` for instalation and initialization (it needs to run again if new remote storage's added) 
+2. create repository (main, master) with `k-repo-create-sftp.sh`
+3. add folders or files with `kopia snapshot create [source]`
+
+### Next:
+- add new SFTP storage's for main repository replication (sync) with k-repo-sync-add-sftp.sh
+- use k-repo-sync.sh to sync data to additional storage's
+- use k-repo-connect-sftp.sh to make other repository active (main)
+
+### File `config` stores configuration for Kopia, as: 
+- list of remote storage's
+- default password for repository encryption
+- other options and variables
 
 Essential CLI commands
 ---
