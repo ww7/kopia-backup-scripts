@@ -9,7 +9,8 @@
 # Require: running from "root" or "sudo"
 # Note: operation will be skipped if already done before
 
-source config
+script_dir="$( cd "$( dirname "$0" )" && pwd )"
+source $script_dir/config
 
 set -e
 set -uo pipefail
@@ -22,7 +23,6 @@ source config
 # boxes="u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de"
 
 # initialization
-script_dir="$( cd "$( dirname "$0" )" && pwd )"
 cd $script_dir || { echo "Error: keys directory inaccessible" && exit 1; }
 chmod +x *.sh
 [[ -d keys ]] || mkdir keys || { echo "Error: can't create directory, check permissions of script's folder"; exit 1; }

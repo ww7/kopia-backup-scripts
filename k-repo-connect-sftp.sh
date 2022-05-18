@@ -3,13 +3,13 @@
 set -euo pipefail
 # set -x
 
-source config
+script_dir="$( cd "$( dirname "$0" )" && pwd )"
+source $script_dir/config
 # `config` overwrites: 
 # box_main="u281891@u281891.your-storagebox.de"
 # repository_remote_folder="/home/kopia/json"
 
 box="$box_main"
-script_dir="$( cd "$( dirname "$0" )" && pwd )"
 keyfile="$script_dir/keys/id_kopia"
 knownhosts="$script_dir/keys/known_hosts"
 

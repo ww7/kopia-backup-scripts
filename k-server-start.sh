@@ -5,7 +5,8 @@
 set -euo pipefail
 # set -x
 
-source config
+script_dir="$( cd "$( dirname "$0" )" && pwd )"
+source $script_dir/config
 
 ip=$(curl -s -4 ifconfig.co)
 

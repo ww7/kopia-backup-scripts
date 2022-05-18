@@ -6,12 +6,12 @@ set -e
 set -uo pipefail
 # set -x
 
-source config
+script_dir="$( cd "$( dirname "$0" )" && pwd )"
+source $script_dir/config
 # `config` overwrites: 
 # boxes_to_sync="u281891@u281891.your-storagebox.de u281891@u281892.your-storagebox.de"
 # repository_remote_folder="/home/kopia/json"
 
-script_dir="$( cd "$( dirname "$0" )" && pwd )"
 keyfile="$script_dir/keys/id_kopia"
 knownhosts="$script_dir/keys/known_hosts"
 
