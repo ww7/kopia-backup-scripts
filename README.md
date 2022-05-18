@@ -7,7 +7,7 @@ This repository contains Bash scripts toolset for [Kopia](https://kopia.io/docs/
 
 _**Current version adopted for storing backup repositories on Hetzner StorageBox (over SFTP)**_
 
-_Demo Hetzner StorageBox'es: "u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de"_
+_Demo Hetzner StorageBox'es: `u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de`_
 
 Installation
 ---
@@ -54,9 +54,9 @@ Quick start
 3. add folders or files with `kopia snapshot create [source]`
 
 ### Next:
-- add new SFTP storage's for main repository replication (sync) with k-repo-sync-add-sftp.sh
-- use k-repo-sync.sh to sync data to additional storage's
-- use k-repo-connect-sftp.sh to make other repository active (main)
+- add new SFTP storage's for main repository replication (sync) with `k-repo-sync-add-sftp.sh`
+- use `k-repo-sync.sh` to sync data to additional storage's
+- use `k-repo-connect-sftp.sh` to make other repository active (main)
 
 ### File `config` stores configuration for Kopia, as: 
 - list of remote storage's
