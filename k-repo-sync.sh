@@ -2,7 +2,7 @@
 
 set -e
 set -uo pipefail
-# set -x
+set -x
 
 script_dir="$( cd "$( dirname "$0" )" && pwd )"
 source $script_dir/config
@@ -13,6 +13,7 @@ source $script_dir/config
 keyfile="$script_dir/keys/id_kopia"
 knownhosts="$script_dir/keys/known_hosts"
 
+repo_main=$(echo $repo_main | sed 's/@/\t/g' | sed 's/:/\t/g' | awk '{print $1"@"$2}')
 kopia repository connect from-config --file "$script_dir/repositories/repo-$repo_main.config"
 
 for repo in $repo_sync; do 
