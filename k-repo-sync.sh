@@ -17,12 +17,22 @@ kopia repository connect from-config --file "$script_dir/repositories/repo-$repo
 
 for repo in $repo_sync; do 
   
+  username=${repo%%@*} 
   host=$(echo $repo | sed 's/.*@//' | sed 's/:/\t/g' | awk '{print $1}')
   port=$(echo $repo | sed 's/.*://')
 
   [[ -n $(grep "$host" "$script_dir/keys/known_hosts") ]] || ssh-keyscan -p $port $host >> "$knownhosts"  2> /dev/null
  
-  kopia repository sync-to from-config --delete --file "$script_dir/repositories/repo-$username@$host.config"
+  # kopia repository sync-to from-config --delete --file "$script_dir/repositories/repo-$username@$host.config"
+
+    kopia repository sync-to sftp \
+    --username $username \
+    --host $host \
+    --port $port \
+    --keyfile $keyfile \
+    --known-hosts $knownhosts \
+    --path $repository_folder \
+    --delete
 
 done
 
