@@ -69,7 +69,7 @@ Quick start
 - default password for repository encryption
 - other options and variables
 
-Quick start and Postgres Docker container
+Quick start for DB backup with `kopia` (Postgres in Docker)
 ---
 ```sh
 # set password to ENV `export KOPIA_PASSWORD="pass"` or `source <kopia-scripts>/config`
@@ -109,7 +109,7 @@ Postgres export/import with Docker examples
 
 > https://hub.docker.com/_/postgres
 
-> /docker-entrypoint-initdb.d/ accept only text format dump
+> "docker-entrypoint-initdb.d/" accept only text format dump
 
 Tools can be used: `psql`, `pgcli`, `pg_dump`, `pg_restore`, `createdb`, `dropdb` etc
 
