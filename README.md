@@ -8,6 +8,7 @@ This repository contains Bash scripts toolset for [Kopia](https://kopia.io/docs/
 _**Current version adopted for storing backup repositories on Hetzner StorageBox (over SFTP)**_
 
 _Demo Hetzner StorageBox'es: `u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de`_
+_Demo VPS: 104.131.96.248, http://104.131.96.248:8080/_
 
 Installation
 ---
@@ -67,6 +68,151 @@ Quick start
 - list of remote storage's
 - default password for repository encryption
 - other options and variables
+
+Quick start and Postgres Docker container
+---
+```sh
+# set password to ENV `export KOPIA_PASSWORD="pass"` or `source <kopia-scripts>/config`
+mkdir -p examples/tmp/
+
+# check repository status  
+kopia repository status
+
+# create container with Postgres example database 
+docker-compose -f ./pg-create-example-docker.yml up -d
+
+# dump database to file
+docker exec -i kopia-scripts_db_1 pg_dump -U test > examples/tmp/test.sql
+
+# container stop and remove
+docker-compose -f ./pg-create-example-docker.yml stop
+docker-compose -f ./pg-create-example-docker.yml rm -f
+
+# create snapshot of examples/tmp/test.sql
+kopia snapshot create examples/tmp/test.sql # <path to file or folder what need to backup>
+
+# list of snapshots for file
+kopia snapshot list examples/tmp/test.sql
+
+# restore from selected ID
+kopia snapshot restore <ID> examples/tmp/test-restored.sql
+
+# or get last shapshot ID and restore it
+kopia snapshot restore $(kopia snapshot list examples/tmp/test.sql --json | jq '.[].id' | tail -n 1) examples/tmp/test-restored.sql
+
+# create container with Postgres restored example database
+docker-compose -f ./pg-restore-example-docker.yml up -d
+```
+
+Postgres export/import with Docker examples 
+---
+
+> https://hub.docker.com/_/postgres
+
+> /docker-entrypoint-initdb.d/ accept only text format dump
+
+Tools can be used: `psql`, `pgcli`, `pg_dump`, `pg_restore`, `createdb`, `dropdb` etc
+
+```sh
+# dump from Docker container
+docker exec -i kopia-scripts_db_1 pg_dump -U test > test.sql
+# dump from $PGHOST
+pg_dump postgresql://test:test@$PGHOST:5432/test > test.sql
+
+# database restore with cleanup to Docker container from custom-format dump
+docker exec -i kopia-scripts_db_1 pg_restore --clean -U test -h $PGHOST -p 5432 -d test example-custom-format.sql
+# database restore with DB creation to Docker container from custom-format dump
+docker exec -i kopia-scripts_db_1 pg_restore --create --clean -U test -h $PGHOST -p 5432 -d template1 example-custom-format.sql
+
+# import text format dump
+docker exec -i kopia-scripts_db_1 psql -U test < example.sql
+
+# database restore with re-create to $PGHOST
+psql postgresql://test:test@$PGHOST:5432/template1 -c 'drop database test;'
+psql postgresql://test:test@$PGHOST:5432/template1 -c 'create database test with owner test;'
+psql --set ON_ERROR_STOP=on postgresql://test:test@$PGHOST:5432/test < test.sql
+```
+
+## Additional information
+### Postgress Docker variables
+```dockerfile
+    environment:
+      - POSTGRES_USR="someuser"
+      - POSTGRES_PWD="somepwd"
+      - POSTGRES_DB="somedb"
+      - POSTGRES_URL="postgres://${POSTGRES_USR}:${POSTGRES_PWD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
+```
+### Postgress Docker volumes
+```dockerfile
+    volumes:
+    # docker-entrypoint-initdb.d/ scipts only runs when `pgdata` directory is empty
+      - ./examples/postgress/example.sql:/docker-entrypoint-initdb.d/import.sql
+      - ./examples/postgress/script-example.sh:/docker-entrypoint-initdb.d/startup.sh
+    # mount `pgdata` to custom path
+      - ./examples/postgress/pgdata:/var/lib/postgresql/data
+```
+
+
+### Standalone environment variables
+> https://www.postgresql.org/docs/current/libpq-envars.html
+```
+export PGDATABASE=
+export PGUSER=
+export PGPASSWORD=
+export PGHOST=
+export PGPORT=5432
+```
+
+### Other Docker Postgress container examples:
+```
+cat ${BACKUP_SQL_File} | docker exec -i ${CONTAINER_NAME} pg_restore \
+    --verbose \
+    --clean \
+    --no-acl \
+    --no-owner \
+    -U ${USER} \
+    -d ${DATABASE}
+```
+
+### Docker tips:
+```
+# find IP of container
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' kopia-scripts_db_1
+```
+
+### Notes:
+```sh
+# `pg_dump` https://www.postgresql.org/docs/current/backup-dump.html
+# dump a database into a custom-format archive file
+pg_dump -Fc mydb > db.dump
+# dump a database into a directory-format archive
+pg_dump -Fd mydb -f dumpdir
+
+# `dropdb` drop database 
+PGPASSWORD=test dropdb -U test -h $PGHOST -p 5432 test
+
+# `pg_restore` https://www.postgresql.org/docs/current/app-pgrestore.html
+# import
+PGPASSWORD=test pg_restore -U test -h $PGHOST -p 5432 -d test example-custom-format.sql
+# clean and import
+PGPASSWORD=test pg_restore --clean -U test -h $PGHOST -p 5432 -d test example-custom-format.sql
+# create and import
+PGPASSWORD=test pg_restore --create -U test -h $PGHOST -p 5432 -d template1 example-custom-format.sql
+# drop, create, import
+PGPASSWORD=test pg_restore --create --clean -U test -h $PGHOST -p 5432 -d template1 example-custom-format.sql
+```
+
+Kopia Policies example
+---
+```
+kopia policy set --global \
+    --keep-annual 0 \
+    --keep-monthly 0 \
+    --keep-weekly 52 \
+    --keep-daily 30 \
+    --keep-hourly 0 \
+    --keep-latest 5
+```
 
 Essential CLI commands
 ---

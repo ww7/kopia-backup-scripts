@@ -1,3 +1,5 @@
 cache/
 # keys/
 # repositaries/
+repositories/local/
+examples/tmp/*

@@ -16,9 +16,9 @@ set -uo pipefail
 script_dir="$( cd "$( dirname "$0" )" && pwd )"
 source $script_dir/config
 # `config` overwrites: 
-# Hetzner StorageBox'es (one or space separated list), syntax: user@host
+# Hetzner StorageBox'es (one or space separated list), syntax: user@host:port
 # Uncomment to overwrite StorageBox'es list from 'config' file
-# repositories="u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de"
+# repositories="u281891@u281891.your-storagebox.de:23 u281892@u281892.your-storagebox.de:23"
 
 # initialization
 cd $script_dir || { echo "Error: keys directory inaccessible" && exit 1; }
@@ -32,7 +32,7 @@ knownhosts="$script_dir/keys/known_hosts"
 if [[ ! -f $(which kopia) ]]; then
   curl -s https://kopia.io/signing-key | sudo gpg --dearmor -o /usr/share/keyrings/kopia-keyring.gpg
   echo "deb [signed-by=/usr/share/keyrings/kopia-keyring.gpg] http://packages.kopia.io/apt/ stable main" | sudo tee /etc/apt/sources.list.d/kopia.list
-  apt update && apt install kopia lftp -y #kopia-ui
+  apt update && apt install kopia lftp jq -y #kopia-ui
   { [[ -f $(which kopia) ]] && echo "Kopia installed to $(which kopia)"; } || { echo "Error: Kopia no installed, check errors" && exit 1; }
 fi
 
