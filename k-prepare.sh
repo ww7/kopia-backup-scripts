@@ -32,7 +32,7 @@ knownhosts="$script_dir/keys/known_hosts"
 if [[ ! -f $(which kopia) ]]; then
   curl -s https://kopia.io/signing-key | sudo gpg --dearmor -o /usr/share/keyrings/kopia-keyring.gpg
   echo "deb [signed-by=/usr/share/keyrings/kopia-keyring.gpg] http://packages.kopia.io/apt/ stable main" | sudo tee /etc/apt/sources.list.d/kopia.list
-  apt update && apt install kopia lftp jq -y #kopia-ui
+  apt update && apt install kopia lftp jq fuse -y #kopia-ui
   { [[ -f $(which kopia) ]] && echo "Kopia installed to $(which kopia)"; } || { echo "Error: Kopia no installed, check errors" && exit 1; }
 fi
 

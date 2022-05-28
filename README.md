@@ -8,7 +8,8 @@ This repository contains Bash scripts toolset for [Kopia](https://kopia.io/docs/
 _**Current version adopted for storing backup repositories on Hetzner StorageBox (over SFTP)**_
 
 _Demo Hetzner StorageBox'es: `u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de`_
-_Demo VPS: 104.131.96.248, http://104.131.96.248:8080/_
+
+_Demo server: `104.131.96.248`, database editor Adminer: http://104.131.96.248:8080/_
 
 Installation
 ---
@@ -16,35 +17,37 @@ Installation
 Dependecies: `git`
 
 1. Open Terminal locally or connect to remote Linux server (Ubuntu/Debian) via SSH
-2. Run `git clone --depth=1 https://github.com/ww7/kopia-scripts.git` to fetch this repo
-3. Run `bash ./kopia-scripts/kopia-prepare.sh` to install Kopia and dependencies
-4. (optional) Open new local Terminal or reconnect to remote SSH (for environment reload)
+2. Scripts download `git clone --depth=1 https://github.com/ww7/kopia-scripts.git`  
+3. Dependencies instalation `bash ./kopia-scripts/kopia-prepare.sh` 
+4. (optional) Reopen Terminal or reconnect to remote SSH (to reload environment variable PATH)
 
 Configuration
 ---
 
-Parameters and environment variables for scripts stored in `config` file.
-All paramenetrs can be overwritten inside every script (place after `source config`).
+Parameters and environment variables stored in `config` file.
+
+All paramenetrs can be reassigned inside script (place after `source config`).
 
 Scripts 
 ---
 
-`k-prepare.sh` performs:
-> Require: running from "root" or "sudo". Note: operation will be skipped if already done before.
-- install of software dependencies and Kopia (for Linux Ubuntu/Debian)
-- generate SSH key for Kopia autorization to remote repositories based on SFTP/SSH
-- import SSH key to Hetzner StorageBox'es (listed in `box` variable), add hosts to known_hosts
-- add scripts path to env
+- `k-prepare.sh` performs:
+  > Require: running from "root" or "sudo"
+  - install of software dependencies and Kopia (for Linux Ubuntu/Debian)
+  - generate SSH key for Kopia autorization to remote repositories based on SFTP/SSH
+  - import SSH key to Hetzner StorageBox'es (listed in `box` variable), add hosts to known_hosts
+  - add scripts path to env
+  
 
-`k-repo-create-sftp.sh` – create repositary and save separate config file for futher connections.
+- `k-repo-create-sftp.sh` – create repositary and save separate config file for futher connections.
 
-`k-repo-connect-sftp.sh` – connect to existing repositary, making it as active (main).
+- `k-repo-connect-sftp.sh` – connect to existing repositary, making it as active (main).
 
-`k-repo-sync-add-sftp.sh` – add SFTP for data replication (synchronization) from main repository and save separate config files for futher connections.
+- `k-repo-sync-add-sftp.sh` – add SFTP for data replication (synchronization) from main repository and save separate config files for futher connections.
 
-`k-repo-sync.sh` – sync repositories data, from _repo_main_ to _repo_sync_.
+- `k-repo-sync.sh` – sync repositories data, from _repo_main_ to _repo_sync_.
 
-`k-server-start.sh` – draft version for run Kopia web dashboard UI 
+- `k-server-start.sh` – draft version for run Kopia web dashboard UI 
 
 Quick start
 ---
@@ -134,7 +137,7 @@ psql --set ON_ERROR_STOP=on postgresql://test:test@$PGHOST:5432/test < test.sql
 ```
 
 ## Additional information
-### Postgress Docker variables
+### Postgres Docker variables
 ```dockerfile
     environment:
       - POSTGRES_USR="someuser"
@@ -142,14 +145,14 @@ psql --set ON_ERROR_STOP=on postgresql://test:test@$PGHOST:5432/test < test.sql
       - POSTGRES_DB="somedb"
       - POSTGRES_URL="postgres://${POSTGRES_USR}:${POSTGRES_PWD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
 ```
-### Postgress Docker volumes
+### Postgres Docker volumes
 ```dockerfile
     volumes:
     # docker-entrypoint-initdb.d/ scipts only runs when `pgdata` directory is empty
-      - ./examples/postgress/example.sql:/docker-entrypoint-initdb.d/import.sql
-      - ./examples/postgress/script-example.sh:/docker-entrypoint-initdb.d/startup.sh
+      - ./examples/postgres/example.sql:/docker-entrypoint-initdb.d/import.sql
+      - ./examples/postgres/script-example.sh:/docker-entrypoint-initdb.d/startup.sh
     # mount `pgdata` to custom path
-      - ./examples/postgress/pgdata:/var/lib/postgresql/data
+      - ./examples/postgres/pgdata:/var/lib/postgresql/data
 ```
 
 
@@ -163,7 +166,7 @@ export PGHOST=
 export PGPORT=5432
 ```
 
-### Other Docker Postgress container examples:
+### Other Docker Postgres container examples:
 ```
 cat ${BACKUP_SQL_File} | docker exec -i ${CONTAINER_NAME} pg_restore \
     --verbose \

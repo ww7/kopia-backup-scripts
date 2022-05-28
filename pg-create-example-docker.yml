@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
     volumes: 
-      - ./examples/postgress/example.sql:/docker-entrypoint-initdb.d/import.sql
+      - ./examples/postgres/example.sql:/docker-entrypoint-initdb.d/import.sql
 
   adminer:
     image: adminer
