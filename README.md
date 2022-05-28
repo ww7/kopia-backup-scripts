@@ -9,7 +9,7 @@ _**Current version adopted for storing backup repositories on Hetzner StorageBox
 
 _Demo Hetzner StorageBox'es: `u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de`_
 
-_Demo server: `104.131.96.248`, database editor Adminer: http://104.131.96.248:8080/_
+_Demo server: `104.131.96.248`, database Adminer: http://104.131.96.248:8080/ (user/password: "pass")_
 
 Installation
 ---
@@ -19,7 +19,7 @@ Dependecies: `git`
 1. Open Terminal locally or connect to remote Linux server (Ubuntu/Debian) via SSH
 2. Scripts download `git clone --depth=1 https://github.com/ww7/kopia-scripts.git`  
 3. Dependencies instalation `bash ./kopia-scripts/kopia-prepare.sh` 
-4. (optional) Reopen Terminal or reconnect to remote SSH (to reload environment variable PATH)
+4. _(optional)_ Reopen Terminal or reconnect to remote SSH (to reload environment variable PATH)
 
 Configuration
 ---
@@ -53,21 +53,21 @@ Quick start
 ---
 
 ### Steps for first run:
-1. Edit `config` file (or use provided example):
-- `repo_main` (required), – main SFTP repository storage (syntax: user@host)
-- `repo_sync` (optional) – additional storages for main repository replication/sync (one or space separated list) 
-- `repository_folder` (reqired) – path where repository folder placed on storage
-- `KOPIA_PASSWORD` (reqired) – password for repositories encryption
-2. Run `k-prepare.sh` for instalation and initialization (it needs to run again if new remote storage's added). First time password for remote user@storage_host can be asked
-3. Create repository (main, master) with `k-repo-create-sftp.sh`
-4. Add folders or files with `kopia snapshot create [source (path to file or folder)]`
+1. Edit `config` file (or use the example provided):
+- `repo_main` _(required)_, – main SFTP repository storage (syntax: user@host)
+- `repo_sync` _(optional)_ – list of additional storages for main repository replication (one or space separated list) 
+- `repository_folder` _(required)_ – path where repository folder placed on remote storage
+- `KOPIA_PASSWORD` _(required)_ – password for repositories encryption
+2. Run `k-prepare.sh` for software dependencies instalation, authorized_keys import, initialization (need to run again if additional remote storage's added). First run the password of remote user@storage_host can be asked
+3. Create repository (main) with `k-repo-create-sftp.sh`
+4. Add folders or files with `kopia snapshot create <path to file or folder>`
 
-### Next:
-- add new SFTP storage's for main repository replication (sync) with `k-repo-sync-add-sftp.sh`
-- use `k-repo-sync.sh` to sync data to additional storage's
-- use `k-repo-connect-sftp.sh` to make other repository active (main)
+### Next steps:
+- add new SFTP storage's for main repository replication with `k-repo-sync-add-sftp.sh`
+- use `k-repo-sync.sh` to replicate data to additional storage's
+- use `k-repo-connect-sftp.sh` to make active other repository (main)
 
-### File `config` stores configuration for Kopia, as: 
+### File `config` store configuration for Kopia, as: 
 - list of remote storage's
 - default password for repository encryption
 - other options and variables
@@ -81,7 +81,7 @@ mkdir -p examples/tmp/
 # check repository status  
 kopia repository status
 
-# create container with Postgres example database 
+# create container with Postgres database example
 docker-compose -f ./pg-create-example-docker.yml up -d
 
 # dump database to file
@@ -103,7 +103,7 @@ kopia snapshot restore <ID> examples/tmp/test-restored.sql
 # or get last shapshot ID and restore it
 kopia snapshot restore $(kopia snapshot list examples/tmp/test.sql --json | jq '.[].id' | tail -n 1) examples/tmp/test-restored.sql
 
-# create container with Postgres restored example database
+# create container with Postgres restored database
 docker-compose -f ./pg-restore-example-docker.yml up -d
 ```
 
@@ -166,24 +166,13 @@ export PGHOST=
 export PGPORT=5432
 ```
 
-### Other Docker Postgres container examples:
-```
-cat ${BACKUP_SQL_File} | docker exec -i ${CONTAINER_NAME} pg_restore \
-    --verbose \
-    --clean \
-    --no-acl \
-    --no-owner \
-    -U ${USER} \
-    -d ${DATABASE}
-```
-
 ### Docker tips:
 ```
 # find IP of container
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' kopia-scripts_db_1
 ```
 
-### Notes:
+### Other tips:
 ```sh
 # `pg_dump` https://www.postgresql.org/docs/current/backup-dump.html
 # dump a database into a custom-format archive file
