@@ -61,4 +61,4 @@
 
 
 # Links
-[Benchmarking Kopia and Borg: Architecture, Scale, and Performance](https://www.kasten.io/kubernetes/resources/blog/benchmarking-kopia-architecture-scale-and-performance)
+[Benchmarking Kopia and Borg: Architecture, Scale, and Performance](https://www.kasten.io/kubernetes/resources/blog/benchmarking-kopia-architecture-scale-and-performance) (v0.6.0-rc1 dated July, 2020)
