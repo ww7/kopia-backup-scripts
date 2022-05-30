@@ -4,10 +4,10 @@
 1. Space efficient, Kopia has both deduplication and compression.
 
     1.1. Deduplication means content-addressable snapshots, which has many benefits:
-    - Each snapshot is always incremental, no data included in previous snapshots is ever re-uploaded to the repository based on file content.
+    - Each snapshot is always incremental, no data included in previous snapshots is ever re-uploaded to the repository.
     - Multiple copies of the same file will be stored once. This is known as de-duplication.
-    - After moving or renaming even large files, Kopia can recognize that they have the same content and won’t need to upload them again.
-    - Efficient handling of changes to very large files, that will be snapshotted by only uploading the changed parts and not the entire file.
+    - After moving or renaming even large files, Kopia can recognize the same content and won’t need to upload them again.
+    - Efficient handling of changes to very large files, that will be snapshotted by only uploading the changed parts and not entire file.
 
     1.2. Compression to save extra storage and bandwidth. Supports modern algorithms such as ZSTD and s2.
 
@@ -28,9 +28,9 @@
 
 7. Redudancy:
 
-    7.1. syncronisation of repository data to multiple storages
+    7.1. Syncronisation of repository to multiple storages
 
-    7.2. files can be often recovered even after partial loss of repository contents, because key index information and repository metadata is stored redundantly to prevent single points of failure
+    7.2. Files can be often recovered even after partial loss of repository contents, because key index information and repository metadata is stored redundantly to prevent single points of failure
     
     7.3. Consistency where data structures and algorithms are designed to maintain data consistency even in the event of a hardware failure or software misconfiguration. For example: silent data corruption after write, misconfigured or unsupported filesystem, large clock skew.
 
