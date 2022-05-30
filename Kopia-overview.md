@@ -11,9 +11,9 @@
 
     1.2. Compression to save extra storage and bandwidth. Supports modern algorithms such as ZSTD and s2.
 
-2. Encryption of repositories makes suitable for backups to not fully trusted storages. Uses state-of-the-art encryption algorithms, such as AES-256 or ChaCha20. Master key is encrypted with user-provided passphrase, which is never sent outside.
+2. Encryption of repositories makes it suitable for backups to not fully trusted storages. Uses state-of-the-art encryption algorithms, such as AES-256 or ChaCha20. Master key is encrypted with user-provided passphrase, which is never sent outside.
 
-3. Smart posibilies for reducing storing cost and quick browse the repository contents. Kopia does segregate metadata from data. Directory listings, snapshot manifests and few other minor data pieces are stored in pack files separately. It allows to cache all metadata files locally, which provides fast directory listing, manifest listing and very fast verification without having to download actual data.
+3. Smart posibilies for reducing storing cost and quick browse the repository contents. Kopia does segregate metadata from data. Directory listings, snapshot manifests and few other minor data pieces are stored in pack files separately. It allows to cache all metadata files locally, that provides fast directory listing, manifest listing and very fast verification without having to download actual data.
 
 4. Optimal price with scaling. Kept metadata separate from the actual data allows to store backup data in AWS S3 Deep Glacier or other "cold" storage at a lowest cost, and still do incremental backups. 
 
@@ -42,20 +42,20 @@
 
     9.2. Web-dashboard GUI with HTTP API server that can be used to trigger snapshots, get their status and access snapshotted data.
 
-    9.3. Multi-user (ACL rules) access with different namespaces (separates data).
+    9.3. Multi-user (ACL rules) access to different namespaces (separates data).
     
     9.4. Policies for repository cleanup and snapshots scheduling:
     - retention - how long to keep snapshots before expired
     - scheduling - how frequently/when should snapshots be created
 
-    9.5. Actions feature for running custom commands or scripts before and after snapshot root and also before/after individual folders as they get snapshotted. For example: sending notifications, chain of snapshots, filesystem-level snapshots (for e.g. ZFS, Btrfs)
+    9.5. Actions feature for running custom commands or scripts before and after snapshot root and also before/after individual folders as they get snapshotted. For example: sending notifications, chain of snapshots, filesystem-level snapshots (for e.g. ZFS, Btrfs).
 
-    9.6. Support excludes from .gitignore files
+    9.6. Support excludes from .gitignore files.
 
 
 #### Notes: 
 
-1. Compared to Borg, Kopia is a backup software based on the similar concepts what include: infinite increments, rolling-hash based deduplication, immutable blobs, encryption. But has some things going for it in addition, such as the client-side architecture with support for a wide array of backends, repo synchronization ability (using the same array of backends), and the ability to do concurrent backups on the same repo.
+1. Compared to Borg, Kopia is a backup software based on the similar concepts what include: infinite increments, rolling-hash based deduplication, immutable blobs, encryption. But has some things going for it in addition, such as the client-side architecture with support for a wide array of backends, repo synchronization ability (using the same array of backends), the ability to do concurrent backups on the same repo, multi-user, server-mode etc.
 
 2. `q` blobs are very aggressively cached by the Kopia client, so may appear not to be accessed when performing basic operations like listing snapshots etc.
 
