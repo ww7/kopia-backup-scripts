@@ -50,7 +50,7 @@
 
     9.5. Actions feature for running custom commands or scripts before and after snapshot root and also before/after individual folders as they get snapshotted. For example: sending notifications, chain of snapshots, filesystem-level snapshots (for e.g. ZFS, Btrfs).
 
-    9.6. Support excludes from .gitignore files.
+    9.6. Support excludes patterns with .kopiaignore files (like .gitignore).
 
 
 #### Notes: 
