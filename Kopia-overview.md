@@ -24,7 +24,7 @@
     - Wasabi prices 4 TB of data, with 100% of it downloaded every month around $287/year according to their price calculator.
     - Backblaze B2's prices 4 TB of data upload, delete and download only 1TB/month puts out around $360/year. But download of 4TB every month puts at $720/year.
         > cloud storages (blob buckets, object storages) price very depends to amount of data downloaded
-    - Hetzner storage boxes offer 10TB for ~$48/month, which is $576 a year -- free ingress/egress, no complicated or hidden fees for operations.
+    - Hetzner storage boxes offer 10TB for ~$48/month, which is $576 a year – free ingress/egress, no complicated or hidden fees.
 
 7. Redudancy:
 
