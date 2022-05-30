@@ -13,7 +13,7 @@
 
 2. Encryption of repositories makes it suitable for backups to not fully trusted storages. Uses state-of-the-art encryption algorithms, such as AES-256 or ChaCha20. Master key is encrypted with user-provided passphrase, which is never sent outside.
 
-3. Smart posibilies for reducing storing cost and quick browse the repository contents. Kopia does segregate metadata from data. Directory listings, snapshot manifests and few other minor data pieces are stored in pack files separately. It allows to cache all metadata files locally, that provides fast directory listing, manifest listing and very fast verification without having to download actual data.
+3. Smart posibilies to reduce storing cost and quick browse the repository contents. Kopia does segregate metadata from data. Directory listings, snapshot manifests and few other minor data pieces are stored in pack files separately. It allows to cache all metadata files locally, that provides fast directory listing, manifest listing and very fast verification without having to download actual data.
 
 4. Optimal price with scaling. Kept metadata separate from the actual data allows to store backup data in AWS S3 Deep Glacier or other "cold" storage at a lowest cost, and still do incremental backups. 
 
