@@ -9,7 +9,7 @@
     - After moving or renaming even large files, Kopia can recognize that they have the same content and won’t need to upload them again.
     - Efficient handling of changes to very large files, that will be snapshotted by only uploading the changed parts and not the entire file.
 
-    1.2. Compression to save extra storage and bandwidth. Supports modern algorithms such as s2 and ZSTD.
+    1.2. Compression to save extra storage and bandwidth. Supports modern algorithms such as ZSTD and s2.
 
 2. Encryption of repositories makes suitable for backups to not fully trusted storages. Uses state-of-the-art encryption algorithms, such as AES-256 or ChaCha20. Master key is encrypted with user-provided passphrase, which is never sent outside.
 
@@ -27,28 +27,38 @@
     - Hetzner storage boxes offer 10TB for ~$48/month, which is $576 a year -- free ingress/egress, no complicated or hidden fees for operations.
 
 7. Redudancy:
-    - syncronisation of repository data to multiple storages
-    - files can be often recovered even after partial loss of repository contents, because key index information and repository metadata is stored redundantly to prevent single points of failure
-    - repository consistency where data structures and algorithms are designed to maintain data consistency even in the event of a crash or failure, but in rare cases the repository may still get corrupted, usually due to hardware or software misconfiguration. For example: silent data corruption after write, misconfigured or unsupported filesystem, large clock skew.
+
+    7.1. syncronisation of repository data to multiple storages
+
+    7.2. files can be often recovered even after partial loss of repository contents, because key index information and repository metadata is stored redundantly to prevent single points of failure
+    
+    7.3. Consistency where data structures and algorithms are designed to maintain data consistency even in the event of a hardware failure or software misconfiguration. For example: silent data corruption after write, misconfigured or unsupported filesystem, large clock skew.
 
 8. Rich Command Line Interface for managing snapshots and policies, but also for low-level access to the underlying repository, including low-level data recovery.
 
 9. Kopia provide other neat features:
 
-    9.1 Mountable as filesystems (as local folder) for quick overview and restores.
+    9.1. Mountable as filesystems (as local folder) for quick overview and restores.
 
-    9.2 Web-dashboard GUI with HTTP API server that can be used to trigger snapshots, get their status and access snapshotted data.
+    9.2. Web-dashboard GUI with HTTP API server that can be used to trigger snapshots, get their status and access snapshotted data.
 
-    9.3 Multi-user (ACL rules) access with different namespaces (separates data).
+    9.3. Multi-user (ACL rules) access with different namespaces (separates data).
     
     9.4. Policies for repository cleanup and snapshots scheduling:
     - retention - how long to keep snapshots before expired
     - scheduling - how frequently/when should snapshots be created
 
-    9.5 Actions feature for running custom commands or scripts before and after snapshot root and also before/after individual folders as they get snapshotted. For example: sending notifications, chain of snapshots, filesystem-level snapshots (for e.g. ZFS, Btrfs)
+    9.5. Actions feature for running custom commands or scripts before and after snapshot root and also before/after individual folders as they get snapshotted. For example: sending notifications, chain of snapshots, filesystem-level snapshots (for e.g. ZFS, Btrfs)
 
+    9.6. Support excludes from .gitignore files
 
 
 #### Notes: 
 
-1. `q` blobs are very aggressively cached by the Kopia client, so may appear not to be accessed when performing basic operations like listing snapshots etc.
+1. Compared to Borg, Kopia is a backup software based on the similar concepts what include: infinite increments, rolling-hash based deduplication, immutable blobs, encryption. But has some things going for it in addition, such as the client-side architecture with support for a wide array of backends, repo synchronization ability (using the same array of backends), and the ability to do concurrent backups on the same repo.
+
+2. `q` blobs are very aggressively cached by the Kopia client, so may appear not to be accessed when performing basic operations like listing snapshots etc.
+
+
+# Links
+[Benchmarking Kopia and Borg: Architecture, Scale, and Performance](https://www.kasten.io/kubernetes/resources/blog/benchmarking-kopia-architecture-scale-and-performance)
