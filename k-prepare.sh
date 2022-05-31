@@ -52,7 +52,10 @@ for repo in $repositories; do
   [[ -n $(grep "$host" "$script_dir/keys/known_hosts") ]] || ssh-keyscan -p $port $host >> "$knownhosts" 2> /dev/null
   scp -q -P $port "$username@$host":/home/.ssh/authorized_keys "$authorized_keys"
   [[ -n $(grep "$key" keys/"$username@$host"_authorized_keys) ]] && { echo "$repo : key already imported" && continue; }
-  echo $(cat keys/id_kopia.pub) | tee -a "$authorized_keys"
+  # https://en.wikibooks.org/wiki/OpenSSH/Client_Configuration_Files
+  # ( echo -n 'from="fromserver.example.com",no-agent-forwarding,no-X11-forwarding,no-port-forwarding,command="internal-sftp" ' && \
+  # ( echo -n 'restrict,command="/usr/bin/pgbackrest ${SSH_ORIGINAL_COMMAND#* }" ' && \
+  echo "restrict $(cat keys/id_kopia.pub)" | tee -a "$authorized_keys"
   echo -e "echo mkdir .ssh \n chmod 700 .ssh \n put "$authorized_keys" .ssh/authorized_keys \n chmod 600 .ssh/authorized_keys" | sftp -q -P $port "$username@$host" > /dev/null 2>&1
   echo "$repo : key imported" 
 done
