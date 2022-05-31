@@ -17,14 +17,14 @@
 
 4. Optimal price with scaling. Kept metadata separate from the actual data allows to store backup data in AWS S3 Deep Glacier or other "cold" storage at a lowest cost, and still do incremental backups. 
 
-5. Client-side architecture. Kopia performs all its operations without having to maintain dedicated server and supports a variety of storage providers, including cloud storage. 
-
-6. Works with close to all storage backends. Some prices for storages:
+5. Client-side architecture. Kopia performs all its operations without having to maintain dedicated server and supports a variety of storage providers, including cloud storage. Works with close to all storage backends. Some prices for storages:
     - AWS Deep Glacier 4 TB of data, storing will be ~$50/year (free ingress), if ever need to retrieve the data, it's cost around $370.
     - Wasabi prices 4 TB of data, with 100% of it downloaded every month around $287/year according to their price calculator.
     - Backblaze B2's prices 4 TB of data upload, delete and download only 1TB/month puts out around $360/year. But download of 4TB every month puts at $720/year.
         > cloud storages (blob buckets, object storages) price very depends to amount of data downloaded
     - Hetzner storage boxes offer 10TB for ~$48/month, which is $576 a year – free ingress/egress, no complicated or hidden fees.
+
+6. Lock-free concurrent multi-client backups and operations including garbage collection.
 
 7. Redudancy:
 
@@ -51,6 +51,8 @@
     9.5. Actions feature for running custom commands or scripts before and after snapshot root and also before/after individual folders as they get snapshotted. For example: sending notifications, chain of snapshots, filesystem-level snapshots (for e.g. ZFS, Btrfs).
 
     9.6. Support excludes patterns with .kopiaignore files (like .gitignore).
+
+    
 
 
 #### Notes: 
