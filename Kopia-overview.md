@@ -61,6 +61,8 @@
 
 2. `q` blobs are very aggressively cached by the Kopia client, so may appear not to be accessed when performing basic operations like listing snapshots etc.
 
+3. Directory listings, snapshot manifests and few other minor data pieces are stored in pack files starting with `q` while the bulk of data is stored in pack files starting with `p`. Indexes into both kinds of pack files are stored in filenames starting with `n`. It can be used with conditional storage class based on the blob id prefix. The `p` blobs contain the bulk of data while `q` blobs and others contain metadata so it might make sense (not sure about cost) to only put `p` in the glacier class.
+
 
 # Links
 [Benchmarking Kopia and Borg: Architecture, Scale, and Performance](https://www.kasten.io/kubernetes/resources/blog/benchmarking-kopia-architecture-scale-and-performance) (v0.6.0-rc1 dated July, 2020)

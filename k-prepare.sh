@@ -43,7 +43,6 @@ key=$(cat keys/id_kopia.pub)
 
 # import newly created SSH key to StorageBox'es, add hosts to known_hosts
 repositories="${repo_main} ${repo_sync}"
-
 for repo in $repositories; do 
   username=${repo%%@*} 
   host=$(echo $repo | sed 's/.*@//' | sed 's/:/\t/g' | awk '{print $1}')
