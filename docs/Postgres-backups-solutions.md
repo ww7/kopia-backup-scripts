@@ -17,7 +17,7 @@ Basical DB dumping, called as "logical", allow to dump structure only, separate 
 - No managing of tablespaces
 
 ## Binary backups: `pgBackRest`, `wal-e/wal-g`, `pg_probackup`, `barman` etc
-Highly functional solutions for backup and recovery of PostgreSQL clusters (based on `pg_basebackup` official tool for binary backups, hard to use).
+Highly functional solutions for backup and recovery of PostgreSQL clusters (based on official tool `pg_basebackup` that hard to use, minimal functionality).
 
 #### PROS:
 - Incremental/differential backups 
