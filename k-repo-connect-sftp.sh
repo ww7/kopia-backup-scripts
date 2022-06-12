@@ -29,6 +29,6 @@ kopia repository connect sftp \
   --known-hosts $knownhosts \
   --path $repository_folder
 
-# kopia repository validate-provider
+kopia repository validate-provider
 
 echo "Repository: $repo connected and active"

@@ -47,7 +47,7 @@ for repo in $repo_sync; do
     --known-hosts $knownhosts \
     --path $repository_folder
 
-  # validating of new storage 
+  # validating of new storage for sync
   kopia repository validate-provider
 
 done
