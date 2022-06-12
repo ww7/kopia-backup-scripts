@@ -1,4 +1,4 @@
-Postgres backups solutions
+Postgres backup solutions
 ===
 
 ## Logical backups: `pg_dump` and `pg_dumpall`
