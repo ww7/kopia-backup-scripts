@@ -52,7 +52,7 @@ pgbackrest --stanza=demo --type=full backup # force full backup
 # lish of backups
 pgbackrest info
 ```  
-5) Conclusion: usage of `pgBackRest` with Docker no very simple, Postgres should be hostned with `SSHD`, or include `pgBackRest`, possible stategies:
+5) Conclusion: usage of `pgBackRest` with Docker no very simple, Postgres should be hosted with `SSHD`, or include `pgBackRest`, possible stategies:
 - Integrate `pgBackRest` in Postgres container image
 - Use prebuilt Postgres container image with `pgBackRest` e.g. [crunchy-postgres](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/overview/overview/)
 - Use [Crunchy Container suite](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/overview/overview/) and [crunchy-pgbackrest](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/container-specifications/crunchy-pgbackrest/) (also Dedicated Repository Host mode e.g. in [woblerr/pgbackrest](https://hub.docker.com/r/woblerr/pgbackrest))
