@@ -1,19 +1,19 @@
-### HOW to setup pgBackRest, is there a docker image?
-1. Install as package `apt install pgbackrest` / `yum install pgbackrest` (recomended and simplest way, updates frequently)
+## HOW to setup pgBackRest, is there a docker image?
+1. Install as package `apt install pgbackrest` / `yum install pgbackrest` (recommended and simplest way, updated frequently)
 2. Build from the source (cost a time and disk space for dependencies)
 3. Run with Docker [prebuilt images](https://hub.docker.com/search?q=pgBackRest)
 
-### HOW to configure pgBackRest to take first backup of test DB (created for `pg_dump` test)
+## HOW to configure pgBackRest to take first backup of test DB (created for `pg_dump` test)
 
 >NOTE: `pgbackrest` works locally or via SSH protocol, connection to `postgresql://` protocol not supported (default 5432 port).
 To use it with containerized Postgres (Docker) `pgbackrest` should be inside `postgresql` container.
 Such prebuilt contaner images of `postgresql` and related tools provided by [Crunchy Data Container Suite](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/), [Crunchy on Docker Hub](https://hub.docker.com/u/crunchydata), [Crunchy pgBackRest usage examples](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/examples/backup-restoration/pgbackrest/) (Crunchy is active contributor of Postgres development and provide production ready Postgres solutions).
 
->NOTE: Newest pgBackRest (> [2.37, February 2022](https://www.postgresql.org/about/news/pgbackrest-237-released-2403/)) versions implements new feature: "TLS server", that allow to communicate between pgBackRest instances with significantly faster performance (more lightweight than SSH) and allows to communicate between different architectures.
+>NOTE: Newest `pgBackRest` (> [2.37, February 2022](https://www.postgresql.org/about/news/pgbackrest-237-released-2403/)) versions implements new feature: "TLS server", that allow to communicate between pgBackRest instances with significantly faster performance (more lightweight than SSH) and allows to communicate between different architectures.
 
-1. Allow access for `replication` (binary backup) in `pg_hba.conf`, edit: `host replication all all trust` (`host replication <PG username> <host, IP of container> trust`). Can be automated by initialization script with command `echo "host replication all all trust" >> /var/lib/postgresql/data/pg_hba.conf`. Authentication method can be changed from passwordless `trust` to e.g. `scram-sha-256`. 
-- Aadded `init.sh` script to Docker Compose yml files. 
-2. Create config for `/etc/pgbackrest/pgbackrest.conf` (or set as CLI parameters) 
+1. Allow access for `replication` (binary backup) in `pg_hba.conf`, edit: `host replication all all trust` (`host replication <pg username> <alowed host> trust`). Can be automated by initialization script with command `echo "host replication all all trust" >> /var/lib/postgresql/data/pg_hba.conf`. Authentication method can be changed from passwordless `trust` to e.g. `scram-sha-256`. 
+- Added `init.sh` script to Docker Compose yml files. 
+2. Create config for `/etc/pgbackrest/pgbackrest.conf` (or set with CLI parameters) 
 - Prepare variables
 ```sh
 # find postgres container volume path for config "pg1-path"
@@ -21,7 +21,7 @@ docker inspect -f '{{range.Mounts}}{{if eq .Type "volume"}}{{println .Source}}{{
 # create folder for backup repository
 mkdir -p /var/lib/pgbackrest
 ```
-- Edit `pgbackrest` config `nano /etc/pgbackrest/pgbackrest.conf 
+- Edit `pgbackrest` config `nano /etc/pgbackrest/pgbackrest.conf`
 ```sh
 [global]
 repo1-path=/var/lib/pgbackrest
@@ -30,7 +30,7 @@ repo1-path=/var/lib/pgbackrest
 [demo]
 pg1-path=/var/lib/docker/volumes/1cdbc4c8569f018ee4fb8f3976fb34b11e8458881ec0c09e365452fa4651739c/_data_ # path to Postgres data folder
 ```
-4) (-) create `stanza` (settings for certain postgres claster/replica in `pgbackrest` terms) and check it
+4) (not success) create `stanza` (settings for certain postgres claster/replica in `pgbackrest` terms) and check it
 ```sh
 pgbackrest --stanza=demo stanza-create
 pgbackrest --stanza=demo check
@@ -52,14 +52,14 @@ pgbackrest --stanza=demo --type=full backup # force full backup
 # lish of backups
 pgbackrest info
 ```  
-5) Conclusion: usage `pgBackRest` with Docker no very simple, Postgres needs to run on host with SSH (not in Docker), or possible stategies:
+5) Conclusion: usage of `pgBackRest` with Docker no very simple, Postgres should be hostned with `SSHD`, or include `pgBackRest`, possible stategies:
 - Integrate `pgBackRest` in Postgres container image
 - Use prebuilt Postgres container image with `pgBackRest` e.g. [crunchy-postgres](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/overview/overview/)
 - Use [Crunchy Container suite](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/overview/overview/) and [crunchy-pgbackrest](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/container-specifications/crunchy-pgbackrest/) (also Dedicated Repository Host mode e.g. in [woblerr/pgbackrest](https://hub.docker.com/r/woblerr/pgbackrest))
 - Use Postgres container with `SSHD` enabled (not recommended).
 - Learn new `pgBackRest TLS server` connectivity.
 
-### HOW to configure pgBackRest to restore first backup of test DB against fresh DB
+## HOW to configure pgBackRest to restore first backup of test DB against fresh DB
 Restore operate on cluster level (not a single DB) and will overwrite whole cluster.
 To restore from backup:
 1. Stop cluster `pg_ctlcluster <version> main stop`
@@ -74,13 +74,13 @@ pgbackrest --stanza=demo --log-level-console=info --delta restore
 3. Start cluster `sudo pg_ctlcluster 11 main start`
 4. Create fresh backup `pgbackrest --stanza=main backup`
 
-### Make a change to test DB
+## Make a change to test DB
 ```sh
 # Using pgbench, let’s create some test data:
 pgbench -i -s 100 test
 ```
 
-### HOW to configure pgBackRest to take incremental backup so that this change is saved
+## HOW to configure pgBackRest to take incremental backup so that this change is saved
 1. Backing up a running PostgreSQL cluster requires WAL archiving to be enabled
 - Enable required settings in `postgresql.conf`
 ```sh
@@ -117,8 +117,8 @@ retention-full=2 # retention of full backups
 4. Create the Stanza `pgbackrest --stanza=demo stanza-create` (once the repository has been configured and the stanza created and checked, the repository encryption settings cannot be changed)
 5. Check repository `pgbackrest --stanza=demo check` and backup `pgbackrest --stanza=demo backup`
 
-### WHAT are the ways to take incremental backup
-#### Periodic schedule like cron? HOW?
+## WHAT are the ways to take incremental backup
+### Periodic schedule like cron? HOW?
 - Edit crontab `crontab -e`
 ```
 #pgbackrest backups
@@ -126,7 +126,7 @@ retention-full=2 # retention of full backups
 00 01 * * 0-2,4,5 pgbackrest --stanza=demo --type=incr backup
 ```
 
-#### Continuously like streaming replication? HOW?
+### Continuously like streaming replication? HOW?
 Main steps as enabling for binary backup with pgBackRest, and [additionally](https://pgbackrest.org/user-guide.html#replication/streaming)
 1. Add `password/key access` for replication host in `pg_hba.conf` (address of secondary Postgres server to what replication will be streamed)
 2. Check `postgresql.conf` for `listen_addresses = '*'`
@@ -158,19 +158,19 @@ pgbackrest --stanza=demo --delta restore
 ```
 9. Start the cluster on secondary
 
-### Take an incremental backup using the simplest/quickest method we have learned
+## Take an incremental backup using the simplest/quickest method we have learned
 Taking backups is most simple part
 ```sh
 pgbackrest --stanza=demo --type=incr backup
 # or just
 pgbackrest --stanza=demo backup
 ```
-### Restore this backup to a fresh DB
+## Restore this backup to a fresh DB
 ```sh
 # will overwrite whole cluster
 pgbackrest --stanza=demo --delta restore
 ```
-### Verify the change made to test DB shows up
+## Verify the change made to test DB shows up
 ```sh
 # find IP address of postgres container, set variable
 PGHOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' kopia-scripts_db_1)
@@ -179,7 +179,7 @@ pg_dump postgresql://test:test@$PGHOST:5432/test | less
 ```
 
 
-### Other useful commands
+## Other useful commands
 - Test if binary backup works with `pg_basebackup`
 ```sh
 # find IP address of postgres container, set variable
