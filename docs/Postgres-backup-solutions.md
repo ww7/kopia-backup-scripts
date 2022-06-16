@@ -39,11 +39,6 @@ Highly functional solutions for backup and recovery of PostgreSQL clusters (base
 **NOTE**: logical and binary backups can be used together for redudancy and flexibility. 
 For example: do quartely `logical` and continuous `binary` backups with `WAL` (Write-Ahead Log) archive of 1 week depth.
 
-pgBackRest usage examples
----
-
-
-
 
 Links
 ---

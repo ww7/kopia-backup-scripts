@@ -11,9 +11,10 @@ services:
       POSTGRES_PASSWORD: test
     volumes: 
       - ./examples/postgres/example.sql:/docker-entrypoint-initdb.d/import.sql
+      - ./examples/postgres/init.sh:/docker-entrypoint-initdb.d/init.sh
 
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 8090:8080
