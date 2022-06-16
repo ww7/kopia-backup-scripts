@@ -14,9 +14,9 @@ Such prebuilt contaner images of `postgresql` and related tools provided by [Cru
 1. Allow access for `replication` (binary backup) in `pg_hba.conf`, edit: `host replication all all trust` (`host replication <pg username> <alowed host> trust`). Can be automated by initialization script with command `echo "host replication all all trust" >> /var/lib/postgresql/data/pg_hba.conf`. Authentication method can be changed from passwordless `trust` to e.g. `scram-sha-256`. 
 - Added `init.sh` script to Docker Compose yml files. 
 2. Create config for `/etc/pgbackrest/pgbackrest.conf` (or set with CLI parameters) 
-- Prepare variables
+- Prepare
 ```sh
-# find postgres container volume path for config "pg1-path"
+# find postgres data path in container for config "pg1-path"
 docker inspect -f '{{range.Mounts}}{{if eq .Type "volume"}}{{println .Source}}{{end}}{{end}}' kopia-scripts_db_1
 # create folder for backup repository
 mkdir -p /var/lib/pgbackrest
@@ -120,7 +120,7 @@ retention-full=2 # retention of full backups
 ## WHAT are the ways to take incremental backup
 ### Periodic schedule like cron? HOW?
 - Edit crontab `crontab -e`
-```
+```sh
 #pgbackrest backups
 00 01 * * 3,6 pgbackrest --stanza=demo --type=full backup
 00 01 * * 0-2,4,5 pgbackrest --stanza=demo --type=incr backup
@@ -140,7 +140,7 @@ psql -c "create user replicator password 'PSWRD1' replication";
 7. Configure `pgbackrest.conf` on secondary to be in `standby_mode` and specify connection details
 ```sh
 [global]
-repo1-path=/mnt/backups
+repo1-path=/var/lib/pgbackrest
 repo1-retention-full=1
 process-max=2
 log-level-console=info
