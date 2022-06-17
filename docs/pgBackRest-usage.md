@@ -13,7 +13,7 @@ Such prebuilt contaner images of `postgresql` and related tools provided by [Cru
 
 1. Allow access for `replication` (binary backup) in `pg_hba.conf`, edit: `host replication all all trust` (`host replication <pg username> <alowed host> trust`). Can be automated by initialization script with command `echo "host replication all all trust" >> /var/lib/postgresql/data/pg_hba.conf`. Authentication method can be changed from passwordless `trust` to e.g. `scram-sha-256`. 
 - Added `init.sh` script to Docker Compose yml files. 
-2. Create config for `/etc/pgbackrest/pgbackrest.conf` (or set with CLI parameters) 
+2. Create config `/etc/pgbackrest/pgbackrest.conf` (or use CLI parameters) 
 - Prepare
 ```sh
 # find postgres data path in container for config "pg1-path"
@@ -71,7 +71,7 @@ pgbackrest --stanza=demo --log-level-console=info --delta --recovery-option=reco
 # restore last full
 pgbackrest --stanza=demo --log-level-console=info --delta restore
 ```
-3. Start cluster `sudo pg_ctlcluster 11 main start`
+3. Start cluster `sudo pg_ctlcluster <version> main start`
 4. Create fresh backup `pgbackrest --stanza=main backup`
 
 ## Make a change to test DB
