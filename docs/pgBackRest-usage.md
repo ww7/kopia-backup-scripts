@@ -76,7 +76,7 @@ pgbackrest --stanza=demo --log-level-console=info --delta restore
 
 ## Make a change to test DB
 ```sh
-# Using pgbench, let’s create some test data:
+# using pgbench, let’s create some test data:
 pgbench -i -s 100 test
 ```
 
@@ -125,6 +125,7 @@ retention-full=2 # retention of full backups
 00 01 * * 3,6 pgbackrest --stanza=demo --type=full backup
 00 01 * * 0-2,4,5 pgbackrest --stanza=demo --type=incr backup
 ```
+- Also it can be done via Linux `systemd` (`backup.service` and `backup.timer`)
 
 ### Continuously like streaming replication? HOW?
 Main steps as enabling for binary backup with pgBackRest, and [additionally](https://pgbackrest.org/user-guide.html#replication/streaming)
