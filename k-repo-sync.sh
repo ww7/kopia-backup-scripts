@@ -31,8 +31,9 @@ for repo in $repo_sync; do
   #   --keyfile $keyfile \
   #   --known-hosts $knownhosts \
   #   --path $repository_folder \
+  #   --parallel=32 \
   #   --delete
 
-  kopia repository sync-to from-config --delete --file "$script_dir/repositories/repo-$username@$host.config"
+  kopia repository sync-to --parallel=32 from-config --delete --file "$script_dir/repositories/repo-$username@$host.config"
 
 done

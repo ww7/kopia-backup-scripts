@@ -206,6 +206,10 @@ kopia policy set --global \
     --keep-latest 5
 ```
 
+Kopia tweaks
+---
+* To use maximum speed of filesystem/network with `sync-to` use `--parallel=32` (default is `1`, what limit of 5MB/s)
+
 Essential CLI commands
 ---
 

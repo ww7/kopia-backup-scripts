@@ -34,6 +34,7 @@ for repo in $repo_sync; do
     --keyfile $keyfile \
     --known-hosts $knownhosts \
     --path $repository_folder \
+    --parallel=32 \
     --delete
 
   # creating a config file of new storage
