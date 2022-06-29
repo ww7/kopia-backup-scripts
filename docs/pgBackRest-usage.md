@@ -30,7 +30,7 @@ repo1-path=/var/lib/pgbackrest
 [demo]
 pg1-path=/var/lib/docker/volumes/1cdbc4c8569f018ee4fb8f3976fb34b11e8458881ec0c09e365452fa4651739c/_data_ # path to Postgres data folder
 ```
-4) (not success) create `stanza` (settings for certain postgres claster/replica in `pgbackrest` terms) and check it
+3) (not success) create `stanza` (settings for certain postgres claster/replica in `pgbackrest` terms) and check it
 ```sh
 pgbackrest --stanza=demo stanza-create
 pgbackrest --stanza=demo check
@@ -52,8 +52,8 @@ pgbackrest --stanza=demo --type=full backup # force full backup
 # lish of backups
 pgbackrest info
 ```  
-5) Conclusion: usage of `pgBackRest` with Docker no very simple, Postgres should be hosted with `SSHD`, or include `pgBackRest`, possible stategies:
-- Integrate `pgBackRest` in Postgres container image
+4) Conclusion: usage of `pgBackRest` with Docker not straightforward, Postgres container should have the `SSHD` or include `pgBackRest` binary, possible stategies:
+- Integrate `SSHD` or `pgBackRest` in Postgres container image
 - Use prebuilt Postgres container image with `pgBackRest` e.g. [crunchy-postgres](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/overview/overview/)
 - Use [Crunchy Container suite](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/overview/overview/) and [crunchy-pgbackrest](https://access.crunchydata.com/documentation/crunchy-postgres-containers/latest/container-specifications/crunchy-pgbackrest/) (also Dedicated Repository Host mode e.g. in [woblerr/pgbackrest](https://hub.docker.com/r/woblerr/pgbackrest))
 - Use Postgres container with `SSHD` enabled (not recommended).
