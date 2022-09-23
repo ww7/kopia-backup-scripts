@@ -1,16 +1,16 @@
 # Hetzner StorageBox'es (one or space separated list), syntax: user@host:port
-export repo_main="u281891@u281891.your-storagebox.de:23"
-export repo_sync="u281892@u281892.your-storagebox.de:23"
+export repo_main="xxx@uxxx.your-storagebox.de:23"
+export repo_sync="xxx@xxx.your-storagebox.de:23"
 
 # Folder path where repository stored on remote storage
 export repository_folder="/home/kopia/json"
 
 # Default password what mandatory for repositories encryption
-export KOPIA_PASSWORD="pass"
+export KOPIA_PASSWORD="xxx"
 
 # Web UI
-export ui_username="k"
-export ui_password="k"
+export ui_username="xxx"
+export ui_password="xxx"
 
 # Other Kopia settings
 export KOPIA_CHECK_FOR_UPDATES=false
