@@ -7,10 +7,6 @@ This repository contains Bash scripts toolset for [Kopia](https://kopia.io/docs/
 
 _**Current version adopted for storing backup repositories on Hetzner StorageBox (over SFTP)**_
 
-_Demo Hetzner StorageBox'es: `u281891@u281891.your-storagebox.de u281892@u281892.your-storagebox.de`_
-
-_Demo server: `104.131.96.248`, database Adminer: http://104.131.96.248:8080/ (user/password: "pass")_
-
 Installation
 ---
 
